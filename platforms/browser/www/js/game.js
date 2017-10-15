@@ -173,12 +173,24 @@ function checkPlayerCollision() {
 		[player.x + player.w, player.y + player.h], 
 		[player.x, player.y + player.h]
 	];
-	let lastWall = level.walls[0];
-	// TDOO : Get points from lastWall
-	// to compute distance from player
-	playerCorners.forEach((j) => {
-		
-	});
+
+	var lastWall = level.walls[0];
+	if (lastWall != undefined) {
+		playerCorners.forEach(function (j) {
+			for (var x = 0; x < lastWall.firstLength; x++) {
+				if (distancePoint(j[0], j[1], x, lastWall.y) < 1) {
+					console.log("collision!")
+				}
+			}
+			for (var x = lastWall.firstLength + lastWall.holeLength + 1; x <= lastWall.totalLength; x++) {
+				if (distancePoint(j[0], j[1], x, lastWall.y) < 1) {
+					console.log("collision!")
+				}	
+			}
+			
+		});		
+	}
+
 }
 
 function distancePoint(x1, y1, x2, y2) {

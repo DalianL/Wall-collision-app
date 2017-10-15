@@ -1,7 +1,7 @@
-- Collision detection
 - Game Over screen when collision with "Retry" and "Main Menu" buttons
 - Player and level reset when coming back to the main menu
 - Timer value to decide when the game is over + screen with "Main Menu" button
 - Mode 2 (with keys)
 - Adjust difficulty
+- Collision detection improvment ?
 - Better looks ?
