@@ -58,7 +58,11 @@ class LevelHandler {
 
 	moveWalls() {
 		this.walls.forEach((j) => {
-			j.y = j.y + (this.verticalSpacing * this.speed); 
+			j.y = j.y + (this.verticalSpacing * this.speed);
+			if (j.y > h) {
+				let index = this.walls.indexOf(j);
+				this.walls.splice(index, 1);
+			}
 		});
 	}
 

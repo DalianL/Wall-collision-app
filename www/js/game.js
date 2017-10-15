@@ -140,6 +140,8 @@ function mainGameLoop(time) {
 	player.draw(ctx);
 	level.drawWalls(ctx);
 
+	checkPlayerCollision();
+
     player.move(inputStates, delta);
     level.moveWalls();
 
@@ -151,7 +153,7 @@ function initMode(num) {
 	level.initLevel(num);
 	if (num == 2 || num == 4) {
 		// increase player speed for hard mode
-		player.speed = player.speed * 1.5;
+		player.speed = player.speed * 1.33;
 	}
 	inputStates.press = false; 
 	currentGameState = gameStates.gameRunning;
@@ -160,4 +162,25 @@ function initMode(num) {
 	setInterval(function() {
 		level.addWall();
 	}, 2000 / num);
+
+}
+
+function checkPlayerCollision() {
+	// checks if the corner of the square hits a line
+	let playerCorners = [
+		[player.x, player.y], 
+		[player.x + player.w, player.y], 
+		[player.x + player.w, player.y + player.h], 
+		[player.x, player.y + player.h]
+	];
+	let lastWall = level.walls[0];
+	// TDOO : Get points from lastWall
+	// to compute distance from player
+	playerCorners.forEach((j) => {
+		
+	});
+}
+
+function distancePoint(x1, y1, x2, y2) {
+	return Math.sqrt( ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)) );
 }
