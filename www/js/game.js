@@ -1,25 +1,26 @@
-// vars to handle the game's main components
+// to handle the game's main components
 var canvas, ctx, w, h;
 var player;
+var level;
 
-// vars to handle game states
+// to handle game states
 var gameStates = {
   mainMenu: 0,
   gameRunning: 1,
   gameOver: 2,
 };
 
-// vars to block multiple inputs when there should be only one
+// to block multiple inputs when there should be only one
 var inputDetected = false;
 var inputDetected2 = false;
 var inputDelay = 200;
 var inputStates = {};
 var input;
 
-// var to define the starting game screen
+// to define the starting game screen
 var currentGameState = gameStates.mainMenu;
 
-// vars to determine button coordinates
+// to determine button coordinates
 var button1, button2, button3, button4, button5, button6;
 
 function init() {
@@ -32,6 +33,8 @@ function init() {
 	button2 = new Array(93,210,203,245);
 	button3 = new Array(93,290,203,325);
 	button4 = new Array(93,370,203,405);
+
+	level = new LevelHandler(5, 400);
 
 	// Attachs different listeners according to the device type
 	// since mouseup interfers on mobile
@@ -135,38 +138,26 @@ function mainMenuState() {
 function mainGameLoop(time) {
 	// Draws game elements
 	player.draw(ctx);
+	level.drawWalls(ctx);
 
     player.move(inputStates, delta);
+    level.moveWalls();
 
 }
 
 function initMode(num) {
-	if (num == 1) {
-		// Position player at the center
-		player = new Player((w/2) - 15, 460);
-	} else if (num == 2) {
-		player = new Player((w/2) - 15, 460);
-	} else if (num == 3) {
-		player = new Player((w/2) - 15, 460);
-	} else if (num == 4) {
-		player = new Player((w/2) - 15, 460);
+	// Position player at the center
+	player = new Player((w/2) - 15, 460);
+	level.initLevel(num);
+	if (num == 2 || num == 4) {
+		// increase player speed for hard mode
+		player.speed = player.speed * 1.5;
 	}
 	inputStates.press = false; 
 	currentGameState = gameStates.gameRunning;
-}
 
-function getMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-		x: evt.clientX - rect.left,
-		y: evt.clientY - rect.top
-    };
-}
-
-function getTouchPos(canvasDom, touchEvent) {
-	var rect = canvasDom.getBoundingClientRect();
-	return {
-		x: touchEvent.touches[0].clientX - rect.left,
-		y: touchEvent.touches[0].clientY - rect.top
-	};
+	if (num > 2) num = num - 2;
+	setInterval(function() {
+		level.addWall();
+	}, 2000 / num);
 }

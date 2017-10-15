@@ -39,8 +39,8 @@ class Player {
 
 	reset() {
 		this.alive = true;
-		this.x = 150;
-		this.y = 150;
+		this.x = w/2 - 15;
+		this.y = 460;
 	}
 
 	playerAndWallCollisionCheck() {

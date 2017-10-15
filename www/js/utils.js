@@ -1,4 +1,4 @@
-// Time-related functions
+// Time functions
 var oldTime = 0;
 
 function timer(currentTime) {
@@ -7,12 +7,12 @@ function timer(currentTime) {
 	return delta > -100000 ? delta : 0;
 }
 
-// Distance-related functions
+// Distance functions
 function calcDistanceToMove(delta, speed) {
 	return (speed * delta) / 1000;
 }
 
-// Device related functions
+// Device functions
 var mobile = {
   Android: function() {
     return navigator.userAgent.match(/Android/i);
@@ -32,4 +32,21 @@ var isMobile = function() {
 		return true;
 	}
 	return false;
+}
+
+// Position event functions
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+		x: evt.clientX - rect.left,
+		y: evt.clientY - rect.top
+    };
+}
+
+function getTouchPos(canvasDom, touchEvent) {
+	var rect = canvasDom.getBoundingClientRect();
+	return {
+		x: touchEvent.touches[0].clientX - rect.left,
+		y: touchEvent.touches[0].clientY - rect.top
+	};
 }
