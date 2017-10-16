@@ -2,6 +2,7 @@
 var canvas, ctx, w, h;
 var player;
 var level;
+var mode;
 
 // to handle game states
 var gameStates = {
@@ -12,7 +13,6 @@ var gameStates = {
 
 // to block multiple inputs when there should be only one
 var inputDetected = false;
-var inputDetected2 = false;
 var inputDelay = 200;
 var inputStates = {};
 var input;
@@ -22,6 +22,9 @@ var currentGameState = gameStates.mainMenu;
 
 // to determine button coordinates
 var button1, button2, button3, button4, button5, button6;
+
+// to delete the spawner after a reset
+var spawnIntervalId;
 
 function init() {
 	canvas = document.querySelector("#myCanvas");
@@ -75,6 +78,12 @@ function run(time) {
 	// on efface le canvas
 	ctx.clearRect(0, 0, w, h);
 
+	if (currentGameState == gameStates.gameRunning) {
+		if (player.alive == false) {
+			currentGameState = gameStates.gameOver;
+		}
+	}
+
 	handleGameState(time);
 
 	// on relance l'animation si possible
@@ -91,7 +100,7 @@ function handleGameState(time) {
 		  mainGameLoop(time);
 		  break;
 		case gameStates.gameOver:
-		  //gameOverState(time);
+		  gameOverState(time);
 		  break;
 	}
 }
@@ -101,15 +110,15 @@ function mainMenuState() {
 
 	ctx.font = "20px Verdana";
 	ctx.fillStyle = "red";
-	ctx.fillText("--- Wall Survival ---", 50, 60);
+	ctx.fillText("--- Wall Survival ---", 48, 60);
 	
 	ctx.restore()
 	
 	ctx.font = "10px Verdana";
-	ctx.fillText("Mode 1 Easy", 115, 150);
-	ctx.fillText("Mode 1 Hard", 115, 230);
-	ctx.fillText("Mode 2 Easy", 115, 310);
-	ctx.fillText("Mode 2 Hard", 115, 390);
+	ctx.fillText("Mode 1 Easy", 114, 150);
+	ctx.fillText("Mode 1 Hard", 114, 230);
+	ctx.fillText("Mode 2 Easy", 114, 310);
+	ctx.fillText("Mode 2 Hard", 114, 390);
 
 	ctx.beginPath();
 	ctx.lineWidth="2";
@@ -148,6 +157,7 @@ function mainGameLoop(time) {
 }
 
 function initMode(num) {
+	mode = num;
 	// Position player at the center
 	player = new Player((w/2) - 15, 460);
 	level.initLevel(num);
@@ -159,14 +169,15 @@ function initMode(num) {
 	currentGameState = gameStates.gameRunning;
 
 	if (num > 2) num = num - 2;
-	setInterval(function() {
-		level.addWall();
-	}, 2000 / num);
+	if (spawnIntervalId == undefined) {
+		spawnIntervalId = setInterval(function() {
+			level.addWall();
+		}, 2000 / num);
+	}
 
 }
 
 function checkPlayerCollision() {
-	// checks if the corner of the square hits a line
 	let playerCorners = [
 		[player.x, player.y], 
 		[player.x + player.w, player.y], 
@@ -176,15 +187,16 @@ function checkPlayerCollision() {
 
 	var lastWall = level.walls[0];
 	if (lastWall != undefined) {
+		// Checks collision between each player corner and wall points
 		playerCorners.forEach(function (j) {
 			for (var x = 0; x < lastWall.firstLength; x++) {
 				if (distancePoint(j[0], j[1], x, lastWall.y) < 1) {
-					console.log("collision!")
+					player.alive = false;
 				}
 			}
 			for (var x = lastWall.firstLength + lastWall.holeLength + 1; x <= lastWall.totalLength; x++) {
 				if (distancePoint(j[0], j[1], x, lastWall.y) < 1) {
-					console.log("collision!")
+					player.alive = false;
 				}	
 			}
 			
@@ -193,6 +205,49 @@ function checkPlayerCollision() {
 
 }
 
-function distancePoint(x1, y1, x2, y2) {
-	return Math.sqrt( ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)) );
+function gameOverState(time) {
+	ctx.save();
+
+	ctx.font = "20px Verdana";
+	ctx.fillStyle = "red";
+	ctx.fillText("GAME OVER", 88, 90);
+	
+	ctx.restore()
+	
+	ctx.font = "10px Verdana";
+	ctx.fillText("Retry", 132, 230);
+	ctx.fillText("Main Menu", 118, 310);
+
+	ctx.beginPath();
+	ctx.lineWidth="2";
+	ctx.rect(button2[0],button2[1],button2[2]-button2[0],button2[3]-button2[1]);
+	ctx.rect(button3[0],button3[1],button1[2]-button3[0],button3[3]-button3[1]);
+	ctx.stroke();
+
+	ctx.restore();
+
+	if (inputStates.press) {
+		// Retry Button
+		if (input.x < button2[2] && input.x > button2[0] && input.y < button2[3] && input.y > button2[1]) {
+			resetGame(time);
+			initMode(mode);
+		} else if (input.x < button3[2] && input.x > button3[0] && input.y < button3[3] && input.y > button3[1]) {
+			if (!inputDetected) {
+				inputDetected = true;
+				setTimeout(function() {
+					resetGame(time);
+					currentGameState = gameStates.mainMenu;
+					inputDetected = false;
+				}, inputDelay);
+			}
+		}
+	}
+
+}
+
+function resetGame(time) {
+  level.walls = [];
+  player.reset();
+  clearInterval(spawnIntervalId);
+  spawnIntervalId = undefined;
 }
