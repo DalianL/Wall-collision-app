@@ -19,6 +19,10 @@
 <body onload="init();">
 
   <canvas id="myCanvas" width=300 height=500></canvas>
+  <div id="buttons" style="visibility: hidden;">
+      <button onclick="playerMove(-30)" style="width:110px;height:35px;margin-right:50px;margin-left:10px;">LEFT</button>
+      <button onclick="playerMove(30)" style="width:110px;height:35px;">RIGHT</button>
+  </div>
   <div id="debug"></div>
 
   <script type="text/javascript">

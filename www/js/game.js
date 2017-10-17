@@ -3,6 +3,7 @@ var canvas, ctx, w, h;
 var player;
 var level;
 var mode;
+var buttons;
 
 // to handle game states
 var gameStates = {
@@ -28,6 +29,7 @@ var spawnIntervalId;
 
 function init() {
 	canvas = document.querySelector("#myCanvas");
+	buttons = document.querySelector("#buttons");
 	ctx = canvas.getContext("2d");
 	w = canvas.width;
 	h = canvas.height;
@@ -137,8 +139,10 @@ function mainMenuState() {
 			initMode(2);
 		} else if (input.x < button3[2] && input.x > button3[0] && input.y < button3[3] && input.y > button3[1]) {
 			initMode(3);
+			buttons.style.visibility='visible';
 		} else if (input.x < button4[2] && input.x > button4[0] && input.y < button4[3] && input.y > button4[1]) {
 			initMode(4);
+			buttons.style.visibility='visible';
 		}
 	}
 
@@ -234,6 +238,8 @@ function gameOverState(time) {
 		} else if (input.x < button3[2] && input.x > button3[0] && input.y < button3[3] && input.y > button3[1]) {
 			if (!inputDetected) {
 				inputDetected = true;
+				// Hide buttons menu
+				buttons.style.visibility='hidden';
 				setTimeout(function() {
 					resetGame(time);
 					currentGameState = gameStates.mainMenu;
@@ -243,6 +249,12 @@ function gameOverState(time) {
 		}
 	}
 
+}
+
+// Moving with buttons for level 2 only
+function playerMove(direction)
+{
+	player.dmove(direction);
 }
 
 function resetGame(time) {

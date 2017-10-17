@@ -19,6 +19,16 @@ class Player {
 		}
 	}
 
+	dmove(direction)
+	{
+		var newX = direction + this.x;
+		if(newX > 0 && newX < 270)
+		{
+			this.x = newX;
+		}
+		
+	}
+
 	move(inputStates, delta) {
 		this.vx = this.vy = 0;
 		// Checks inputStates
