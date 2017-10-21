@@ -28,6 +28,8 @@ var button1, button2, button3, button4, button5, button6;
 var spawnIntervalId;
 
 function init() {
+	let movement = 30;
+
 	canvas = document.querySelector("#myCanvas");
 	buttons = document.querySelector("#buttons");
 	bt1 = document.querySelector("#bt1");
@@ -60,11 +62,11 @@ function init() {
 		}, false);
 
 		bt1.addEventListener('touchstart', function(e) {
-			player.btnMove(-30);
+			player.btnMove(-movement);
 		}, false);
 
 		bt2.addEventListener('touchstart', function(e) {
-			player.btnMove(30);
+			player.btnMove(movement);
 		}, false);
 
 	} else {
@@ -79,11 +81,11 @@ function init() {
 		}, false);	
 
 		bt1.addEventListener('click', function(e) {
-			player.btnMove(-30);
+			player.btnMove(-movement);
 		}, false);
 
 		bt2.addEventListener('click', function(e) {
-			player.btnMove(30);
+			player.btnMove(movement);
 		}, false);
 	}
 
@@ -271,8 +273,8 @@ function gameOverState(time) {
 }
 
 function resetGame(time) {
-  level.walls = [];
-  player.reset();
-  clearInterval(spawnIntervalId);
-  spawnIntervalId = undefined;
+	level.walls = [];
+	player.reset();
+	clearInterval(spawnIntervalId);
+	spawnIntervalId = undefined;
 }
