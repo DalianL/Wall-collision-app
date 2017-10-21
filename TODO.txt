@@ -1,5 +1,4 @@
 - Make a fixed level structure
 - Timer value to decide when the game is over
 - Screen with "You win!" title + "Main Menu" button when the game is over
-- Better look ?
 - Adjust difficulty ?
