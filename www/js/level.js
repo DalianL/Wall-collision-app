@@ -9,12 +9,14 @@ class Wall {
 	drawWall(ctx) {
 		// First part of the wall
 		ctx.beginPath();
+		ctx.strokeStyle = 'white';
 		ctx.moveTo(0, this.y);
 		ctx.lineTo(this.firstLength, this.y);
 		ctx.stroke();
 
 		// Second part of the wall
 		ctx.beginPath();
+		ctx.strokeStyle = 'white';
 		ctx.moveTo(this.firstLength + this.holeLength, this.y);
 		ctx.lineTo(this.totalLength, this.y);
 		ctx.stroke();

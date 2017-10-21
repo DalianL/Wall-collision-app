@@ -14,7 +14,9 @@ class Player {
 	draw(ctx) {
 		if (this.alive) {
 			ctx.save();
-			ctx.fillRect(this.x, this.y, this.w, this.h);
+			var car = new Image(); // HTML5 Constructor
+			car.src = 'images/car.png';
+			ctx.drawImage(car, this.x, this.y, this.w, this.h);
 			ctx.restore();
 		}
 	}
