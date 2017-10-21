@@ -30,6 +30,8 @@ var spawnIntervalId;
 function init() {
 	canvas = document.querySelector("#myCanvas");
 	buttons = document.querySelector("#buttons");
+	bt1 = document.querySelector("#bt1");
+	bt2 = document.querySelector("#bt2");
 	ctx = canvas.getContext("2d");
 	w = canvas.width;
 	h = canvas.height;
@@ -56,6 +58,16 @@ function init() {
 		canvas.addEventListener('touchend', function(e) {
 			inputStates.press = false;
 		}, false);
+
+		// Buttons
+		bt1.addEventListener('touchstart', function(e) {
+			playerMove(-30);
+		}, false);
+
+		bt2.addEventListener('touchstart', function(e) {
+			playerMove(30);
+		}, false);
+
 	} else {
 		// For debugging on computer
 		canvas.addEventListener('mousedown', function(e) {
@@ -66,6 +78,15 @@ function init() {
 		canvas.addEventListener('mouseup', function(e) {
 			inputStates.press = false;
 		}, false);	
+
+		// Buttons
+		bt1.addEventListener('click', function(e) {
+			playerMove(-30);
+		}, false);
+
+		bt2.addEventListener('click', function(e) {
+			playerMove(30);
+		}, false);
 	}
 
 	run();
