@@ -59,13 +59,12 @@ function init() {
 			inputStates.press = false;
 		}, false);
 
-		// Buttons
 		bt1.addEventListener('touchstart', function(e) {
-			playerMove(-30);
+			player.btnMove(-30);
 		}, false);
 
 		bt2.addEventListener('touchstart', function(e) {
-			playerMove(30);
+			player.btnMove(30);
 		}, false);
 
 	} else {
@@ -79,13 +78,12 @@ function init() {
 			inputStates.press = false;
 		}, false);	
 
-		// Buttons
 		bt1.addEventListener('click', function(e) {
-			playerMove(-30);
+			player.btnMove(-30);
 		}, false);
 
 		bt2.addEventListener('click', function(e) {
-			playerMove(30);
+			player.btnMove(30);
 		}, false);
 	}
 
@@ -270,12 +268,6 @@ function gameOverState(time) {
 		}
 	}
 
-}
-
-// Moving with buttons for level 2 only
-function playerMove(direction)
-{
-	player.dmove(direction);
 }
 
 function resetGame(time) {

@@ -37,6 +37,14 @@ class Player {
 		//this.y += calcDistanceToMove(delta, this.vy);
 	}
 
+	// Moving with buttons for level 2 only
+	btnMove(direction) {
+		var newX = direction + this.x;
+		if(newX > 0 && newX < 270) {
+			this.x = newX;
+		}
+	}
+
 	reset() {
 		this.alive = true;
 		this.x = w/2 - 15;

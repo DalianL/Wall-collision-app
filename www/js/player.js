@@ -19,16 +19,6 @@ class Player {
 		}
 	}
 
-	dmove(direction)
-	{
-		var newX = direction + this.x;
-		if(newX > 0 && newX < 270)
-		{
-			this.x = newX;
-		}
-		
-	}
-
 	move(inputStates, delta) {
 		this.vx = this.vy = 0;
 		// Checks inputStates
@@ -45,6 +35,14 @@ class Player {
 
 		this.x += calcDistanceToMove(delta, this.vx);
 		//this.y += calcDistanceToMove(delta, this.vy);
+	}
+
+	// Moving with buttons for level 2 only
+	btnMove(direction) {
+		var newX = direction + this.x;
+		if(newX > 0 && newX < 270) {
+			this.x = newX;
+		}
 	}
 
 	reset() {
