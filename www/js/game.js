@@ -28,7 +28,7 @@ var button1, button2, button3, button4, button5, button6;
 var spawnIntervalId;
 
 function init() {
-	let movement = 30;
+	let movement = 60;
 
 	canvas = document.querySelector("#myCanvas");
 	buttons = document.querySelector("#buttons");

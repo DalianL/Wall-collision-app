@@ -28,7 +28,7 @@ var button1, button2, button3, button4, button5, button6;
 var spawnIntervalId;
 
 function init() {
-	let movement = 30;
+	let movement = 60;
 
 	canvas = document.querySelector("#myCanvas");
 	buttons = document.querySelector("#buttons");
@@ -132,12 +132,13 @@ function mainMenuState() {
 	ctx.save();
 
 	ctx.font = "20px Verdana";
-	ctx.fillStyle = "red";
+	ctx.fillStyle = "white";
 	ctx.fillText("--- Wall Survival ---", 48, 60);
 	
 	ctx.restore()
 	
 	ctx.font = "10px Verdana";
+	ctx.fillStyle = "white";
 	ctx.fillText("Mode 1 Easy", 114, 150);
 	ctx.fillText("Mode 1 Hard", 114, 230);
 	ctx.fillText("Mode 2 Easy", 114, 310);
