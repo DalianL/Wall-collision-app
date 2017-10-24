@@ -9,7 +9,7 @@ var buttons;
 var listenersEnabled = true;
 
 // to set the maximum amount of walls
-var levelEnd = 10;
+var levelEnd = 20;
 var hasEnded = false;
 
 // to handle game states
