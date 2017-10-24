@@ -9,6 +9,7 @@ class Player {
 		this.speed = 300;
 		this.w = 30;
 		this.h = 30;
+		this.win = false;
 	}
 
 	draw(ctx) {
@@ -53,6 +54,7 @@ class Player {
 	}
 
 	reset() {
+		this.win = false;
 		this.alive = true;
 		this.x = w/2 - 15;
 		this.y = 460;

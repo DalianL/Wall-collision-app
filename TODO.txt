@@ -1,4 +1,2 @@
-- Level consistency
-- Timer value to decide when the game is over
-- Screen with "You win!" title + "Main Menu" button when the game is over
+- Fix wall contact on the sides on easy modes
 - Adjust difficulty ?

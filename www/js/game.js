@@ -5,6 +5,13 @@ var level;
 var mode;
 var buttons;
 
+// to disable the click listeners in certain Modes
+var listenersEnabled = true;
+
+// to set the maximum amount of walls
+var levelEnd = 10;
+var hasEnded = false;
+
 // to handle game states
 var gameStates = {
   mainMenu: 0,
@@ -43,26 +50,28 @@ function init() {
 	button3 = new Array(93,290,203,325);
 	button4 = new Array(93,370,203,405);
 
-	level = new LevelHandler(5, 400);
+	level = new LevelHandler(5, 400, levelEnd);
 
 	// Attachs different listeners according to the device type
 	// since mouseup interfers on mobile
 	if (isMobile()) {
 		canvas.addEventListener('touchstart', function(e) {
-			input = getTouchPos(canvas, e);
-			inputStates.press = true;
+			if (listenersEnabled) {
+				input = getTouchPos(canvas, e);
+				inputStates.press = true;
+			}
 		}, false);
 
 		canvas.addEventListener('touchmove', function(e) {
-			input = getTouchPos(canvas, e);
+			if (listenersEnabled) input = getTouchPos(canvas, e);
 		}, false);
 
 		canvas.addEventListener('touchend', function(e) {
-			inputStates.press = false;
+			if (listenersEnabled) inputStates.press = false;
 		}, false);
 
 		bt1.addEventListener('touchstart', function(e) {
-			player.btnMove(-movement);
+			player.btnMove(-movement);	
 		}, false);
 
 		bt2.addEventListener('touchstart', function(e) {
@@ -72,12 +81,14 @@ function init() {
 	} else {
 		// For debugging on computer
 		canvas.addEventListener('mousedown', function(e) {
-			input = getMousePos(canvas, e);
-			inputStates.press = true;
+			if (listenersEnabled) {
+				input = getMousePos(canvas, e);
+				inputStates.press = true;	
+			}
 		}, false);
 
 		canvas.addEventListener('mouseup', function(e) {
-			inputStates.press = false;
+			if (listenersEnabled) inputStates.press = false;
 		}, false);	
 
 		bt1.addEventListener('click', function(e) {
@@ -133,7 +144,7 @@ function mainMenuState() {
 
 	ctx.font = "20px Verdana";
 	ctx.fillStyle = "white";
-	ctx.fillText("--- Wall Survival ---", 48, 60);
+	ctx.fillText("--- Road Survival ---", 48, 60);
 	
 	ctx.restore()
 	
@@ -161,10 +172,12 @@ function mainMenuState() {
 			initMode(2);
 		} else if (input.x < button3[2] && input.x > button3[0] && input.y < button3[3] && input.y > button3[1]) {
 			initMode(3);
-			buttons.style.visibility='visible';
+			buttons.style.visibility ='visible';
+			listenersEnabled = false;
 		} else if (input.x < button4[2] && input.x > button4[0] && input.y < button4[3] && input.y > button4[1]) {
 			initMode(4);
-			buttons.style.visibility='visible';
+			buttons.style.visibility ='visible';
+			listenersEnabled = false;
 		}
 	}
 
@@ -223,6 +236,9 @@ function checkPlayerCollision() {
 			for (var x = lastWall.firstLength + lastWall.holeLength + 1; x <= lastWall.totalLength; x++) {
 				if (distancePoint(j[0], j[1], x, lastWall.y) < 1) {
 					player.alive = false;
+					if (lastWall.holeLength == 0) {
+						player.win = true;
+					}
 				}	
 			}
 			
@@ -232,21 +248,31 @@ function checkPlayerCollision() {
 }
 
 function gameOverState(time) {
+	listenersEnabled = true;
 	ctx.save();
 
 	ctx.font = "20px Verdana";
 	ctx.fillStyle = "red";
-	ctx.fillText("GAME OVER", 88, 90);
+
+	if (player.win) {
+		ctx.fillText("YOU WIN !!", 93, 90);
+	} else {
+		ctx.fillText("GAME OVER", 88, 90);
+	}
 	
 	ctx.restore()
 	
 	ctx.font = "10px Verdana";
-	ctx.fillText("Retry", 132, 230);
+	if (!player.win) {
+		ctx.fillText("Retry", 132, 230);
+	}
 	ctx.fillText("Main Menu", 118, 310);
 
 	ctx.beginPath();
 	ctx.lineWidth="2";
-	ctx.rect(button2[0],button2[1],button2[2]-button2[0],button2[3]-button2[1]);
+	if (!player.win) {
+		ctx.rect(button2[0],button2[1],button2[2]-button2[0],button2[3]-button2[1]);
+	}
 	ctx.rect(button3[0],button3[1],button1[2]-button3[0],button3[3]-button3[1]);
 	ctx.stroke();
 
@@ -255,8 +281,10 @@ function gameOverState(time) {
 	if (inputStates.press) {
 		// Retry Button
 		if (input.x < button2[2] && input.x > button2[0] && input.y < button2[3] && input.y > button2[1]) {
-			resetGame(time);
-			initMode(mode);
+			if (!player.win) {
+				resetGame(time);
+				initMode(mode);
+			}
 		} else if (input.x < button3[2] && input.x > button3[0] && input.y < button3[3] && input.y > button3[1]) {
 			if (!inputDetected) {
 				inputDetected = true;
@@ -275,6 +303,8 @@ function gameOverState(time) {
 
 function resetGame(time) {
 	level.walls = [];
+	level.maxWalls = levelEnd;
+	hasEnded = false;
 	player.reset();
 	clearInterval(spawnIntervalId);
 	spawnIntervalId = undefined;
