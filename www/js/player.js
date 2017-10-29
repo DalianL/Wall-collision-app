@@ -15,7 +15,7 @@ class Player {
 	draw(ctx) {
 		if (this.alive) {
 			ctx.save();
-			if (isMobile()) {
+			if (!isMobile()) {
 				ctx.fillStyle = "black";
 				ctx.fillRect(this.x, this.y, this.w, this.h);
 			} else {

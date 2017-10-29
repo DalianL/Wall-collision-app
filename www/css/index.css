@@ -24,6 +24,7 @@ body {
     display: block;
 	border: 1px solid;
 	background-color: white;
+	margin-left:20px;
 
 	background-image:url("../images/road.jpg");
     background-repeat:repeat-y;
