@@ -18,10 +18,10 @@ body {
 }
 
 #myCanvas {
-	margin-top: 20px;
+	margin-top: 10px;
 	margin-right: 1px;
 	margin-left: 1px;
-  display: block;
+    display: block;
 	border: 1px solid;
 	background-color: white;
 

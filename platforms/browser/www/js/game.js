@@ -9,7 +9,7 @@ var buttons;
 var listenersEnabled = true;
 
 // to set the maximum amount of walls
-var levelEnd = 10;
+var levelEnd = 20;
 var hasEnded = false;
 
 // to handle game states
@@ -218,10 +218,10 @@ function initMode(num) {
 
 function checkPlayerCollision() {
 	let playerCorners = [
-		[player.x, player.y], 
-		[player.x + player.w, player.y], 
-		[player.x + player.w, player.y + player.h], 
-		[player.x, player.y + player.h]
+		[player.x + 1, player.y + 1], 
+		[player.x - 1 + player.w, player.y + 1], 
+		[player.x - 1 + player.w, player.y + player.h], 
+		[player.x + 1, player.y + player.h]
 	];
 
 	var lastWall = level.walls[0];

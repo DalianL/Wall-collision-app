@@ -218,10 +218,10 @@ function initMode(num) {
 
 function checkPlayerCollision() {
 	let playerCorners = [
-		[player.x, player.y], 
-		[player.x + player.w, player.y], 
-		[player.x + player.w, player.y + player.h], 
-		[player.x, player.y + player.h]
+		[player.x + 1, player.y + 1], 
+		[player.x - 1 + player.w, player.y + 1], 
+		[player.x - 1 + player.w, player.y + player.h], 
+		[player.x + 1, player.y + player.h]
 	];
 
 	var lastWall = level.walls[0];
