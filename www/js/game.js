@@ -144,7 +144,7 @@ function mainMenuState() {
 
 	ctx.font = "20px Verdana";
 	ctx.fillStyle = "white";
-	ctx.fillText("--- Road Survival ---", 48, 60);
+	ctx.fillText("--- Road Survival ---", 65, 60);
 	
 	ctx.restore()
 	
